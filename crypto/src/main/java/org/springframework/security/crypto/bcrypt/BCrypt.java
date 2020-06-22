@@ -689,14 +689,13 @@ public class BCrypt {
 	 */
 	private byte[] crypt_raw(byte password[], byte salt[], int log_rounds,
 							boolean sign_ext_bug, int safety) {
-		int rounds, i, j;
+		long rounds;
+		int i, j;
 		int cdata[] =  bf_crypt_ciphertext.clone();
 		int clen = cdata.length;
 		byte ret[];
 
-		if (log_rounds < 4 || log_rounds > 31)
-			throw new IllegalArgumentException ("Bad number of rounds");
-		rounds = 1 << log_rounds;
+		rounds = roundsForLogRounds(log_rounds);
 		if (salt.length != BCRYPT_SALT_LEN)
 			throw new IllegalArgumentException ("Bad salt length");
 
